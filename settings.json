@@ -27,7 +27,8 @@
     "anti-afk": {
       "enabled": true,
       "sneak": true,
-      "wander": true
+      "wander": true,
+      "jump": true
     },
 
 
