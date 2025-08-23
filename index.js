@@ -137,10 +137,31 @@ function createBot() {
     }
 
     if (config.utils['anti-afk'].enabled) {
-      bot.setControlState('jump', true);
+      console.log('[INFO] Started anti-afk module');
+
+      // Random wandering system
+      setInterval(() => {
+        let x = bot.entity.position.x + (Math.random() * 10 - 5); // random offset -5 to +5
+        let y = bot.entity.position.y;
+        let z = bot.entity.position.z + (Math.random() * 10 - 5);
+
+        bot.pathfinder.setMovements(defaultMove);
+        bot.pathfinder.setGoal(new GoalBlock(Math.floor(x), Math.floor(y), Math.floor(z)));
+      }, 15000); // every 15s pick a new random position
+
+      // Sneak toggle
       if (config.utils['anti-afk'].sneak) {
-        bot.setControlState('sneak', true);
+        setInterval(() => {
+          bot.setControlState('sneak', true);
+          setTimeout(() => bot.setControlState('sneak', false), 2000);
+        }, 30000);
       }
+
+      // Jump every few seconds (looks more human)
+      setInterval(() => {
+        bot.setControlState('jump', true);
+        setTimeout(() => bot.setControlState('jump', false), 500);
+      }, 20000);
     }
   });
 
